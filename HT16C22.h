@@ -4,9 +4,6 @@
 
 #include <stdint.h>
 
-#ifndef RM300_HT16C22_H
-#define RM300_HT16C22_H
-
 #define HT16C22_I2C_Addr    0x3F
 
 
@@ -27,10 +24,10 @@ typedef enum {
 } HT16C22_FPS;
 
 typedef enum {
-    HT16C22_SharePin_VLCD_IVA_ON = 0,
-    HT16C22_SharePin_VLCD_IVA_OFF = 1,
-    HT16C22_SharePin_SEG_IVA_ON = 2,
-    HT16C22_SharePin_SEG_IVA_OFF = 3
+    HT16C22_SharePin_VLCD_IVA_OFF = 0,
+    HT16C22_SharePin_VLCD_IVA_ON = 1,
+    HT16C22_SharePin_SEG_IVA_OFF = 2,
+    HT16C22_SharePin_SEG_IVA_ON = 3,
 } HT16C22_SharePin;
 
 //不同偏压乘以VDD的倍率不同
@@ -71,11 +68,11 @@ typedef enum {
 } HT16C22_IVA;
 
 typedef struct {
-    uint8_t Bias: 1;
-    uint8_t WorkMode: 2;
-    uint8_t FPS: 1;
-    uint8_t SharePin: 2;
-    uint8_t IVA: 4;
+    HT16C22_Bias Bias: 1;
+    HT16C22_WorkMode WorkMode: 2;
+    HT16C22_FPS FPS: 1;
+    HT16C22_SharePin SharePin: 2;
+    HT16C22_IVA IVA: 4;
 } HT16C22_InitTypeDef;
 
 //Please Init I2C Before Use This Init Function
@@ -88,7 +85,7 @@ int HT16C22_Init(void *i2c_write_fc(uint8_t dev_addr, uint8_t *data, uint8_t siz
 //直接写入
 int HT16C22_Write(uint8_t addr, const uint8_t *data, uint8_t size);
 
-int HT16C22_Clear(void);
+int HT16C22_All_Clear(void);
 
 //函数写入模式，请调用Update函数更新屏幕
 
@@ -96,12 +93,14 @@ int HT16C22_Write_Bit(uint8_t COM, uint8_t SEG);
 
 int HT16C22_Clear_Bit(uint8_t COM, uint8_t SEG);
 
-int HT16C22_Update(void);
+int HT16C22_Update_Partial(void);
 
+int HT16C22_Update_Global(void);
+
+void HT16C22_Write_All(void);
 
 //TODO 需要做读取?
 
 //void i2c_write(uint8_t dev_addr, uint8_t dev_reg_addr, uint8_t *data, uint8_t size);
 //void i2c_read(uint8_t dev_addr, uint8_t dev_reg_addr, uint8_t *data, uint8_t size);
 
-#endif //RM300_HT16C22_H
