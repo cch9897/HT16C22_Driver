@@ -61,7 +61,7 @@ int HT16C22_Write_Bit(uint8_t COM, uint8_t SEG) {
     if (SEG % 2 == 0) {
         //右侧
         Display_RAM[SEG / 2] |= 1 << COM;
-        Display_RAM_Update_Bits |= 1 << SEG;
+        Display_RAM_Update_Bits |= 1 << SEG / 2;
     } else {
         //左侧
         Display_RAM[SEG / 2] |= 1 << COM << 4;
